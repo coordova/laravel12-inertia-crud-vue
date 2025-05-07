@@ -55,7 +55,9 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        return Inertia::render('Posts/Edit', [
+            'post' => $post,
+        ]);
     }
 
     /**

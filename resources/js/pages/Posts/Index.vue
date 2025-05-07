@@ -2,8 +2,9 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/vue3';
-import { Post } from '@/types';
+import { Post } from '@/types/oox.d';
 import { usePage } from '@inertiajs/vue3';
+// import { LoaderCircle } from 'lucide-vue-next';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -12,8 +13,22 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-// get posts
-const { data: posts } = usePage<{ posts: Post[] }>();
+/* 3 formas de obtener props */
+// define props - forma 1
+/* const props = defineProps(
+    {
+        posts: Array,
+    }
+);  */
+// define props - forma 1.1
+defineProps({posts: Array});
+
+// define props - forma 2
+// const props = defineProps<{ posts: Post[] }>();
+
+// get posts - forma 3
+// const page = usePage<{ posts: Post[] }>();
+// const posts = page.props.posts;
 
 </script>
 
@@ -43,21 +58,22 @@ const { data: posts } = usePage<{ posts: Post[] }>();
                     </thead>
                     <tbody>
                         <tr
+                            v-for="post in posts"
+                            :key="post.id"
                             class="border-b border-zinc-200 odd:bg-white even:bg-zinc-50 dark:border-zinc-700 odd:dark:bg-zinc-900 even:dark:bg-zinc-800"
                         >
-                            <td class="px-6 py-2 font-medium text-zinc-900 dark:text-white">ID</td>
-                            <td class="px-6 py-2 text-zinc-600 dark:text-zinc-300">Title</td>
-                            <td class="px-6 py-2 text-zinc-600 dark:text-zinc-300">Body</td>
+                            <td class="px-6 py-2 font-medium text-zinc-900 dark:text-white">{{ post.id }}</td>
+                            <td class="px-6 py-2 text-zinc-600 dark:text-zinc-300">{{ post.title }}</td>
+                            <td class="px-6 py-2 text-zinc-600 dark:text-zinc-300">{{ post.body }}</td>
                             <td class="px-6 py-2">
-                                <button
-                                    class="cursor-pointer rounded-lg bg-blue-700 px-3 py-2 text-xs font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                >
-                                    Edit
-                                </button>
+                                <Link :href="route('posts.edit', post.id)" class=" rounded-lg bg-blue-700 px-3 py-2 text-xs font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Edit</Link>
                                 <button
                                     class="ml-1 cursor-pointer rounded-lg bg-red-700 px-3 py-2 text-xs font-medium text-white hover:bg-red-800 focus:ring-4 focus:ring-red-300 focus:outline-none dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
                                 >
-                                    Delete
+                                    <Link :href="route('posts.destroy', post.id)" method="delete" as="button" :preserve-scroll="true">
+                                        <!-- <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" /> -->
+                                        Delete
+                                    </Link>
                                 </button>
                             </td>
                         </tr>
