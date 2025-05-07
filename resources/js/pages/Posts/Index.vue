@@ -2,6 +2,8 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/vue3';
+import { Post } from '@/types';
+import { usePage } from '@inertiajs/vue3';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -9,6 +11,10 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/posts',
     },
 ];
+
+// get posts
+const { data: posts } = usePage<{ posts: Post[] }>();
+
 </script>
 
 <template>
