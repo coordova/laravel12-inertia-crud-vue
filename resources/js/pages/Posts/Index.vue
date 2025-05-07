@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
-import { Head, Link } from '@inertiajs/vue3';
 import { Post } from '@/types/oox.d';
-import { usePage } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 // import { LoaderCircle } from 'lucide-vue-next';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -21,7 +20,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     }
 );  */
 // define props - forma 1.1
-defineProps({posts: Array});
+defineProps({ posts: Array<Post>() });
 
 // define props - forma 2
 // const props = defineProps<{ posts: Post[] }>();
@@ -29,23 +28,22 @@ defineProps({posts: Array});
 // get posts - forma 3
 // const page = usePage<{ posts: Post[] }>();
 // const posts = page.props.posts;
-
 </script>
 
 <template>
     <Head title="Posts" />
-    
+
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-        <!-- Create a Post Button -->
-        <div>
-            <Link
-                :href="route('posts.create')"
-                class="rounded-sm bg-green-700 px-3 py-2 text-xs font-medium text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 focus:outline-none dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-            >
-                Create Post
-            </Link>
-        </div>
+            <!-- Create a Post Button -->
+            <div>
+                <Link
+                    :href="route('posts.create')"
+                    class="rounded-sm bg-green-700 px-3 py-2 text-xs font-medium text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 focus:outline-none dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                >
+                    Create Post
+                </Link>
+            </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm text-zinc-500 rtl:text-right dark:text-zinc-400">
                     <thead class="bg-zinc-50 text-xs text-zinc-700 uppercase dark:bg-zinc-700 dark:text-zinc-400">
@@ -66,7 +64,11 @@ defineProps({posts: Array});
                             <td class="px-6 py-2 text-zinc-600 dark:text-zinc-300">{{ post.title }}</td>
                             <td class="px-6 py-2 text-zinc-600 dark:text-zinc-300">{{ post.body }}</td>
                             <td class="px-6 py-2">
-                                <Link :href="route('posts.edit', post.id)" class=" rounded-lg bg-blue-700 px-3 py-2 text-xs font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Edit</Link>
+                                <Link
+                                    :href="route('posts.edit', post.id)"
+                                    class="rounded-lg bg-blue-700 px-3 py-2 text-xs font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                    >Edit</Link
+                                >
                                 <button
                                     class="ml-1 cursor-pointer rounded-lg bg-red-700 px-3 py-2 text-xs font-medium text-white hover:bg-red-800 focus:ring-4 focus:ring-red-300 focus:outline-none dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
                                 >
