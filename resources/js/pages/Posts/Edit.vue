@@ -11,18 +11,26 @@ import { LoaderCircle } from 'lucide-vue-next';
 // Breadcrumbs
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Post Create',
-        href: '/posts/create',
+        title: 'Post Edit',
+        href: '/posts/edit',
     },
 ];
 
+// definir las props
+/* const props = defineProps({
+    // post: Object, // sin necesidad de usar la interface Post
+    post: Object<Post>(),
+}); */
+
+const props = defineProps(['post']);
+
 const form = useForm({
-    title: '',
-    body: '',
+    title: props.post.title,
+    body: props.post.body,
 });
 
 const submit = () => {
-    form.post(route('posts.store'), {
+    form.put(route('posts.update', props.post.id), {
         preserveScroll: true,
         onSuccess: () => {
             form.reset();
@@ -38,7 +46,7 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Post Create" />
+    <Head title="Post Edit" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
@@ -71,7 +79,7 @@ const submit = () => {
                     <div class="flex items-center gap-4">
                         <Button :disabled="form.processing">
                             <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" />
-                            Save
+                            Update
                         </Button>
                     </div>
                 </form>
