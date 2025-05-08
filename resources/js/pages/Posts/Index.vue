@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
-import { Head, Link } from '@inertiajs/vue3';
-// import { LoaderCircle } from 'lucide-vue-next';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -26,6 +25,32 @@ const props = defineProps({
 // const page = usePage<{ posts: Post[] }>();
 // const posts = page.props.posts;
 
+// delete post function
+const deletePost = (id: number) => {
+    // create form
+    const form = useForm({
+        id: '',
+    });
+
+    // delete post, with confirm, preserve scroll, on success, on error, on finish, on before, with method delete
+    form.delete(route('posts.destroy', id), {
+        preserveScroll: true,
+        onSuccess: () => {
+            form.reset();
+        },
+        onError: () => {
+            form.reset();
+        },
+        onFinish: () => {
+            form.reset();
+        },
+        onBefore: () => {
+            return confirm('Are you sure you want to delete this item?');
+        },
+    });
+};
+
+// confirm deletion function
 const confirmDeletion = () => {
     return confirm('Are you sure you want to delete this item?');
 };
@@ -66,11 +91,23 @@ const confirmDeletion = () => {
                             <td class="px-6 py-2 text-zinc-600 dark:text-zinc-300">{{ post.body }}</td>
                             <td class="px-6 py-2">
                                 <Link
+                                    :href="route('posts.show', post.id)"
+                                    class="rounded-lg bg-blue-700 px-3 py-2 text-xs font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                    >Show</Link
+                                >
+                                <Link
                                     :href="route('posts.edit', post.id)"
                                     class="rounded-lg bg-blue-700 px-3 py-2 text-xs font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                     >Edit</Link
                                 >
-                                <Link
+                                <button
+                                    class="ml-1 cursor-pointer rounded-lg bg-red-700 px-3 py-2 text-xs font-medium text-white hover:bg-red-800 focus:ring-4 focus:ring-red-300 focus:outline-none dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                                    @click="deletePost(post.id)"
+                                >
+                                    Delete
+                                    <!-- <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" /> -->
+                                </button>
+                                <!-- <Link
                                     class="ml-1 cursor-pointer rounded-lg bg-red-700 px-3 py-2 text-xs font-medium text-white hover:bg-red-800 focus:ring-4 focus:ring-red-300 focus:outline-none dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
                                     :href="route('posts.destroy', post.id)"
                                     method="delete"
@@ -78,9 +115,8 @@ const confirmDeletion = () => {
                                     :preserve-scroll="true"
                                     :onBefore="confirmDeletion"
                                 >
-                                    <!-- <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" /> -->
                                     Delete
-                                </Link>
+                                </Link> -->
                             </td>
                         </tr>
                     </tbody>
