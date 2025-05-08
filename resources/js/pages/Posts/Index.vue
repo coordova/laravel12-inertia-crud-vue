@@ -2,6 +2,7 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Eye, Pencil, Plus, Trash2 } from 'lucide-vue-next';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -65,9 +66,9 @@ const confirmDeletion = () => {
             <div>
                 <Link
                     :href="route('posts.create')"
-                    class="rounded-sm bg-green-700 px-3 py-2 text-xs font-medium text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 focus:outline-none dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                    class="inline-flex items-center gap-2 rounded-sm bg-green-700 px-3 py-2 text-xs font-medium text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 focus:outline-none dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                 >
-                    Create Post
+                    <Plus class="h-4 w-4" /> Create Post
                 </Link>
             </div>
             <div class="overflow-x-auto">
@@ -88,23 +89,25 @@ const confirmDeletion = () => {
                         >
                             <td class="px-6 py-2 font-medium text-zinc-900 dark:text-white">{{ post.id }}</td>
                             <td class="px-6 py-2 text-zinc-600 dark:text-zinc-300">{{ post.title }}</td>
-                            <td class="px-6 py-2 text-zinc-600 dark:text-zinc-300">{{ post.body }}</td>
-                            <td class="px-6 py-2">
+                            <td class="px-6 py-2 text-zinc-600 dark:text-zinc-300">
+                                <p class="line-clamp-1">{{ post.body }}</p>
+                            </td>
+                            <td class="flex gap-2 px-6 py-2">
                                 <Link
                                     :href="route('posts.show', post.id)"
-                                    class="rounded-lg bg-blue-700 px-3 py-2 text-xs font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                    >Show</Link
+                                    class="inline-flex items-center gap-2 rounded-lg bg-gray-700 px-3 py-2 text-xs font-medium text-white hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+                                    ><Eye class="h-4 w-4" /> Show</Link
                                 >
                                 <Link
                                     :href="route('posts.edit', post.id)"
-                                    class="rounded-lg bg-blue-700 px-3 py-2 text-xs font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                    >Edit</Link
+                                    class="inline-flex items-center gap-2 rounded-lg bg-blue-700 px-3 py-2 text-xs font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                    ><Pencil class="h-4 w-4" /> Edit</Link
                                 >
                                 <button
-                                    class="ml-1 cursor-pointer rounded-lg bg-red-700 px-3 py-2 text-xs font-medium text-white hover:bg-red-800 focus:ring-4 focus:ring-red-300 focus:outline-none dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                                    class="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-red-700 px-3 py-2 text-xs font-medium text-white hover:bg-red-800 focus:ring-4 focus:ring-red-300 focus:outline-none dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
                                     @click="deletePost(post.id)"
                                 >
-                                    Delete
+                                    <Trash2 class="h-4 w-4" /> Delete
                                     <!-- <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" /> -->
                                 </button>
                                 <!-- <Link
