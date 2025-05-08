@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
-import { Post } from '@/types/oox.d';
 import { Head, Link } from '@inertiajs/vue3';
 // import { LoaderCircle } from 'lucide-vue-next';
 
@@ -14,13 +13,11 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 /* 3 formas de obtener props */
 // define props - forma 1
-/* const props = defineProps(
-    {
-        posts: Array,
-    }
-);  */
+const props = defineProps({
+    posts: Array,
+});
 // define props - forma 1.1
-defineProps({ posts: Array<Post>() });
+// defineProps({ posts: Array<Post>() });
 
 // define props - forma 2
 // const props = defineProps<{ posts: Post[] }>();
@@ -28,6 +25,10 @@ defineProps({ posts: Array<Post>() });
 // get posts - forma 3
 // const page = usePage<{ posts: Post[] }>();
 // const posts = page.props.posts;
+
+const confirmDeletion = () => {
+    return confirm('Are you sure you want to delete this item?');
+};
 </script>
 
 <template>
@@ -69,14 +70,17 @@ defineProps({ posts: Array<Post>() });
                                     class="rounded-lg bg-blue-700 px-3 py-2 text-xs font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                     >Edit</Link
                                 >
-                                <button
+                                <Link
                                     class="ml-1 cursor-pointer rounded-lg bg-red-700 px-3 py-2 text-xs font-medium text-white hover:bg-red-800 focus:ring-4 focus:ring-red-300 focus:outline-none dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                                    :href="route('posts.destroy', post.id)"
+                                    method="delete"
+                                    as="button"
+                                    :preserve-scroll="true"
+                                    :onBefore="confirmDeletion"
                                 >
-                                    <Link :href="route('posts.destroy', post.id)" method="delete" as="button" :preserve-scroll="true">
-                                        <!-- <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" /> -->
-                                        Delete
-                                    </Link>
-                                </button>
+                                    <!-- <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" /> -->
+                                    Delete
+                                </Link>
                             </td>
                         </tr>
                     </tbody>
